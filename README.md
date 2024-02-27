@@ -1,14 +1,20 @@
-# Welcome to your CDK TypeScript project
+# An EC2 instance with Windows that shuts down on idle
 
-This is a blank project for CDK development with TypeScript.
+Deploying this stack will setup an EC2 with Windows and an alarm attached that shuts down the instance after 
+some idle time (30 minutes below 10 percent CPU usage, adjust to your preferences).
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+To start the instance you will need the 'Administrator' password:
 
-## Useful commands
+'scripts/get-password.sh i-01a2f345b67890e1' retrieves it 
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+Then start a TCP tunnel using session manager:
+
+'scripts/start-and-connect.sh i-01a2f345b67890e1'
+
+Connect your RDP client to 'localhost:55678'.
+
+## Prerequisites
+Apart from the obvious CDK dependency, you need https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
+
+On MacOS:
+`brew install session-manager-plugin`
